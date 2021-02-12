@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  automation-mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - automation-mqtt_data:/mosquitto/data
+      - automation-mqtt_config:/mosquitto/config
+      - automation-mqtt_log:/mosquitto/log
+
+  automation-nodered:
+    image: nodered/node-red
+    ports:
+      - 1880:1880
+    volumes:
+      - automation-nodered_data:/data
+
+volumes:
+  automation-mqtt_log:
+  automation-mqtt_data:
+  automation-mqtt_config:
+  automation-nodered_data:
