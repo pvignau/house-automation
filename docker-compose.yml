@@ -3,6 +3,7 @@ version: "3.7"
 services:
   automation-mqtt:
     image: eclipse-mosquitto
+    network_mode: host
     ports:
       - 1883:1883
       - 9001:9001
@@ -12,14 +13,34 @@ services:
       - automation-mqtt_log:/mosquitto/log
 
   automation-nodered:
-    image: nodered/node-red
+    image: yggdrasil-master/nodered:0.1
     ports:
       - 1880:1880
     volumes:
       - automation-nodered_data:/data
+      
+  automation-influxdb:
+    image: influxdb
+    volumes: 
+      - automation-influxdb_data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB
+      - INFLUXDB_ADMIN_USER
+      - INFLUXDB_ADMIN_PASSWORD
+      - INFLUXDB_USER
+      - INFLUXDB_USER_PASSWORD
+      
+  automation-grafana:
+    image: grafana/grafana
+    ports: 
+      - 3000:3000
+    volumes:
+      - automation-grafana_data:/var/lib/grafana
 
 volumes:
   automation-mqtt_log:
   automation-mqtt_data:
   automation-mqtt_config:
   automation-nodered_data:
+  automation-influxdb_data:
+  automation-grafana_data:
