@@ -2,8 +2,12 @@ version: "3.7"
 
 services:
   automation-mqtt:
-    image: eclipse-mosquitto
-    network_mode: host
+    ## As for now. I can't manage to access mqtt through LB fix node
+    image: eclipse-mosquitto:1.6
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.broker==mqtt"
     ports:
       - 1883:1883
       - 9001:9001
